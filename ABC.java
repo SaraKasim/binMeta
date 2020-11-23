@@ -81,6 +81,68 @@ public class ABC extends binMeta {
 		   return s;	 
 		 }
 
+	void SendEmployedBees() {
+		int i, j;
+		/* Employed Bee Phase */
+		for (i = 0; i < FoodNumber; i++) {
+			/* The parameter to be changed is determined randomly */
+			r = ((double) Math.random() * 32767 / ((double) (32767) + (double) (1)));
+			param2change = (int) (r * D);
+
+			/*
+			 * A randomly chosen solution is used in producing a mutant solution of the
+			 * solution i
+			 */
+			r = ((double) Math.random() * 32767 / ((double) (32767) + (double) (1)));
+			neighbour = (int) (r * FoodNumber);
+
+			/* Randomly selected solution must be different from the solution i */
+			// while(neighbour==i)
+			// {
+			// r = ( (double)Math.random()*32767 / ((double)(32767)+(double)(1)) );
+			// neighbour=(int)(r*FoodNumber);
+			// }
+			for (j = 0; j < D; j++)
+				solutions[j] = Foods[i][j];
+
+			/* v_{ij}=x_{ij}+\phi_{ij}*(x_{kj}-x_{ij}) */
+			r = ((double) Math.random() * 32767 / ((double) (32767) + (double) (1)));
+			solutions[param2change] = Foods[i][param2change]
+					+ (Foods[i][param2change] - Foods[neighbour][param2change]) * (r - 0.5) * 2;
+
+			/*
+			 * if generated parameter value is out of boundaries, it is shifted onto the
+			 * boundaries
+			 */
+			
+			simplebounds(solutions);
+			
+	 		//ObjValSol = calculateFunction(solution);
+			FitnessSol = CalculateFitness(ObjValSol);
+
+			/*
+			 * a greedy selection is applied between the current solution i and its mutant
+			 */
+			if (FitnessSol > fitness[i]) {
+
+				/*
+				 * If the mutant solution is better than the current solution i, replace the
+				 * solution with the mutant and reset the trial counter of solution i
+				 */
+				trial[i] = 0;
+				for (j = 0; j < D; j++)
+					Foods[i][j] = solutions[j];
+				f[i] = ObjValSol;
+				fitness[i] = FitnessSol;
+			} else { /* if the solution i can not be improved, increase its trial counter */
+				trial[i] = trial[i] + 1;
+			}
+
+		}
+
+		/* end of employed bee phase */
+
+	}
 
 	@Override
 	public void optimize() // by ABC
