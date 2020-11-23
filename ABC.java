@@ -44,6 +44,7 @@ public class ABC extends binMeta{
 	   /*
 	// Initializing food resources,fitness values, global optimum parameters
 		void initialize() {
+		
 			for (int i = 0; i < FoodNumber; i++) {
 				for (int j = 0; j < D; j++) {
 					Foods[i][j] = Lbvec[j] + ((Ubvec[j] - Lbvec[j]) * Math.random());
